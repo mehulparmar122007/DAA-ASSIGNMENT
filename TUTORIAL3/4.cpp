@@ -9,7 +9,6 @@ int main() {
         cin >> v[i];
     }
 
- 
     if (n == 1) {
         cout << "our peak element is : " << v[0] << endl;
         return 0;
