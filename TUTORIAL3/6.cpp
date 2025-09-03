@@ -1,8 +1,6 @@
-#include<iostream>
+#include<bits/stdc++.h>
 #include<vector>
 using namespace std;
-
-//Constraint:L,R,H are considered to be >0
 
 void merge(vector<vector<int>> &build,int start,int end){
     int mid=(start+end)/2;
@@ -76,12 +74,10 @@ vector<vector<int>> skyline(vector<vector<int>> build,int start,int end){
     return mergelines(skyline(build,start,(start+end)/2),skyline(build,(start+end)/2+1,end));
 }
 
-
 int main(){
     int n;
     cout<<"Enter the number of buildings:";
     cin>>n;
-
     vector<vector<int>> build(n,vector<int>(3,0));
 
     cout<<"For each building,enter left and right x coords and height of the building in order:"<<endl;
@@ -89,7 +85,8 @@ int main(){
         cin>>build[i][0]>>build[i][1]>>build[i][2];
     }
 
-    sortByStart(build,0,n-1);
+
+    sort(build.begin() , build.end());
 
     vector<vector<int>> ans=skyline(build,0,n-1);
     
