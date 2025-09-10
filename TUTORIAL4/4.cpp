@@ -25,12 +25,14 @@ int main() {
         int loc = House[i] + 4;
         while (i < n && House[i] <= loc) i++;
 
-      if(i<n){  
+       
         int towerPos = House[i - 1];
         cout<<towerPos<<"\t";
         min_tower++;
-}
-       
+
+
+    loc = towerPos + 4;
+        while (i < n && House[i] <= loc) i++;
     }
 
     cout << "Minimum number of towers required is: " << min_tower << endl;
