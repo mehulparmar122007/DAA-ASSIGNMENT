@@ -1,67 +1,62 @@
 #include <bits/stdc++.h>
 using namespace std;
-
-// int maxl(int n, vector<int>& p, int j, vector<int>& v, vector<vector<int>>& dp) {
-//     // Base case: only length v[0] = 1 is allowed
-//     if (j == 0) {
-//         return p[0] * n; // cut all into 1-length pieces
-//     }
-//     if(n==0)return 0;
-
-//     if (dp[j][n] != -1) return dp[j][n];
-
-//     // Not pick current length
-//     int notpick = maxl(n, p, j - 1, v, dp);
-
-//     // Pick current length (if possible)
-//     int pick = INT_MIN;
-//     if (n >= v[j]) {
-//         pick = p[j] + maxl(n - v[j], p, j, v, dp);
-//     }
-
-//     return dp[j][n] = max(pick, notpick);
-// }
-
-int main() {
-    int n;
-    cout << "Enter length of rod: ";
-    cin >> n;
-
-    vector<int> p(n);
-    cout << "Enter prices: ";
-    for (int i = 0; i < n; i++) cin >> p[i];
-
-
-    vector<int> v;
-    for (int i = 1; i <= n; i++) v.push_back(i);
-
-    vector<vector<int>> dp(n, vector<int>(n + 1, -1));
-
-    // cout << "Maximum Profit = " << maxl(n, p, n - 1, v, dp) << endl;
-    for(int i=0;i<n+1;i++)
+int minop(int i, int j, string s1, string s2, vector<vector<int>> &dp)
+{
+    if (i == 0)
+        return j;
+    if (j == 0)
+        return i;
+    if (dp[i][j] != -1)
+        return dp[i][j];
+    if (s1[i - 1] == s2[j - 1])
     {
-        dp[0][i] = p[0]*i;
+        return dp[i][j] = 0 + minop(i - 1, j - 1, s1, s2, dp);
     }
-    for(int i=1;i<n;i++)
+    else
     {
-        for(int j=0;j<n+1;j++)
+        return dp[i][j] = min(1 + minop(i, j - 1, s1, s2, dp), min(1 + minop(i - 1, j, s1, s2, dp), 1 + minop(i - 1, j - 1, s1, s2, dp)));
+    }
+}
+int main()
+{
+
+    string s1, s2;
+    cin >> s1 >> s2;
+    int n = s1.size();
+    int m = s2.size();
+    vector<vector<int>> dp(n + 1, vector<int>(m + 1, -1));
+
+    //  cout<<"min number of op is :"<<minop(s1.length()-1 , s2.length()-1 , s1,s2,dp)<<endl;
+    for (int i = 0; i <= n; i++)
+    {
+        dp[i][0] = i;
+    }
+    for (int j = 0; j <= m; j++)
+    {
+        dp[0][j] = j;
+    }
+    for (int i = 1; i <= n; i++)
+    {
+        for (int j = 1; j <= m; j++)
         {
-            int notpick = dp[i-1][j];
-            int pick = 0;
-            if(i+1<=j)
+            if (s1[i - 1] == s2[j - 1])
             {
-                pick = p[i] + dp[i][j-v[i]];
+                dp[i][j] = 0 + dp[i-1][j-1];
             }
-            dp[i][j] = max(pick , notpick);
+            else
+            {
+                dp[i][j] = min(1 + dp[i][j - 1], min(1 + dp[i-1][j], 1 + dp[i-1][j-1]));
+            }
         }
     }
-    for(int i=0;i<n;i++)
+    cout<<"min number of operation is  : "<<dp[n][m]<<endl;
+    for (int i = 0; i <= n; i++)
     {
-        for(int j=0;j<n+1;j++)
+        for (int j = 0; j <= m; j++)
         {
-            cout<<dp[i][j]<<"\t";
+           cout<<dp[i][j]<<"\t";
         }
         cout<<"\n";
     }
-    return 0;
+    
 }
